@@ -1,8 +1,38 @@
+import { AsyncBoundary } from "@/shared/ui";
+import { useGeolocationQuery } from "@/entities/location";
+import {
+  WeatherDisplay,
+  WeatherDisplaySkeleton,
+  HourlyForecast,
+  HourlyForecastSkeleton,
+} from "@/widgets/weather-display";
+
+function WeatherPageSkeleton() {
+  return (
+    <>
+      <WeatherDisplaySkeleton />
+      <HourlyForecastSkeleton />
+    </>
+  );
+}
+
+function GeolocatedWeather() {
+  const { data: location } = useGeolocationQuery();
+
+  return (
+    <AsyncBoundary fallback={<WeatherPageSkeleton />}>
+      <WeatherDisplay lat={location.lat} lon={location.lon} />
+      <HourlyForecast lat={location.lat} lon={location.lon} />
+    </AsyncBoundary>
+  );
+}
+
 export function HomePage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900">Weather App</h1>
-      <p className="mt-2 text-gray-600">현재 위치의 날씨를 확인하세요.</p>
+      <AsyncBoundary fallback={<WeatherPageSkeleton />}>
+        <GeolocatedWeather />
+      </AsyncBoundary>
     </div>
   );
 }

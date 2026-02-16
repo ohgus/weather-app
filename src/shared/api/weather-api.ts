@@ -5,7 +5,12 @@ import type {
 } from "./types";
 
 const BASE_URL = "https://api.openweathermap.org";
+const ICON_BASE_URL = "https://openweathermap.org/img/wn";
 const API_KEY = import.meta.env.VITE_OPENWEATHERMAP_API_KEY;
+
+export function getWeatherIconUrl(icon: string): string {
+  return `${ICON_BASE_URL}/${icon}@2x.png`;
+}
 
 async function fetchJson<T>(url: string): Promise<T> {
   const response = await fetch(url);
