@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { formatDistrictDisplay } from "@/entities/location";
 import { useDebouncedValue } from "@/shared/lib/use-debounce";
 import { LocationPinIcon, CloseIcon, SearchIcon } from "@/shared/ui";
 import { SearchLocationList } from "@/features/search-location";
@@ -45,7 +46,7 @@ export function SearchBar({
       <div className="flex items-center gap-2 rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-sm">
         <LocationPinIcon className="h-5 w-5 shrink-0 text-blue-500" />
         <span className="flex-1 truncate text-sm font-medium text-gray-700">
-          {selectedLocation}
+          {formatDistrictDisplay(selectedLocation)}
         </span>
         <button
           type="button"

@@ -1,4 +1,4 @@
-import { searchDistricts } from "@/entities/location";
+import { searchDistricts, formatDistrictDisplay } from "@/entities/location";
 
 interface SearchLocationListProps {
   query: string;
@@ -28,7 +28,7 @@ export function SearchLocationList({
             className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-blue-50"
             onClick={() => onSelect(district)}
           >
-            {district}
+            {formatDistrictDisplay(district)}
           </button>
         </li>
       ))}

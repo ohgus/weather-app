@@ -1,4 +1,5 @@
 import type { FavoriteLocation } from "@/entities/location/model/types";
+import { formatDistrictDisplay } from "@/entities/location/model/format-district-display";
 
 const STORAGE_KEY = "favorites";
 const MAX_FAVORITES = 6;
@@ -34,7 +35,7 @@ export function addFavorite(location: {
   const newFavorite: FavoriteLocation = {
     id: `${location.lat},${location.lon}`,
     name: location.name,
-    alias: location.name,
+    alias: formatDistrictDisplay(location.name),
     lat: location.lat,
     lon: location.lon,
   };
