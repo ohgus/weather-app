@@ -1,12 +1,13 @@
 import { useParams, useSearchParams, useNavigate } from "react-router";
 import { AsyncBoundary, ArrowLeftIcon } from "@/shared/ui";
+import { formatDistrictDisplay } from "@/entities/location";
 import {
   WeatherDisplay,
   WeatherDisplaySkeleton,
   HourlyForecast,
   HourlyForecastSkeleton,
 } from "@/widgets/weather-display";
-import { FavoriteToggleButton } from "@/features/manage-favorites";
+import { FavoriteToggleButton, useFavorites } from "@/features/manage-favorites";
 
 function WeatherPageSkeleton() {
   return (
@@ -21,6 +22,7 @@ export function DetailPage() {
   const { locationId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { favorites } = useFavorites();
 
   const name = searchParams.get("name") ?? "";
   const [latStr, lonStr] = (locationId ?? "").split(",");
@@ -42,6 +44,9 @@ export function DetailPage() {
     );
   }
 
+  const favorite = favorites.find((f) => f.lat === lat && f.lon === lon);
+  const displayName = favorite?.alias ?? formatDistrictDisplay(name);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -58,7 +63,7 @@ export function DetailPage() {
       </div>
 
       <AsyncBoundary fallback={<WeatherPageSkeleton />}>
-        <WeatherDisplay lat={lat} lon={lon} />
+        <WeatherDisplay lat={lat} lon={lon} displayName={displayName} />
         <HourlyForecast lat={lat} lon={lon} />
       </AsyncBoundary>
     </div>

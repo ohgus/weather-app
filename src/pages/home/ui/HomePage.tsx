@@ -3,7 +3,9 @@ import { AsyncBoundary } from "@/shared/ui";
 import {
   useGeolocationQuery,
   useGeocodingQuery,
+  useReverseGeocodingQuery,
   toGeocodingQuery,
+  formatDistrictDisplay,
 } from "@/entities/location";
 import {
   WeatherDisplay,
@@ -26,10 +28,18 @@ function WeatherPageSkeleton() {
 
 function GeolocatedWeather() {
   const { data: location } = useGeolocationQuery();
+  const { data: koreanName } = useReverseGeocodingQuery(
+    location.lat,
+    location.lon,
+  );
 
   return (
     <AsyncBoundary fallback={<WeatherPageSkeleton />}>
-      <WeatherDisplay lat={location.lat} lon={location.lon} />
+      <WeatherDisplay
+        lat={location.lat}
+        lon={location.lon}
+        displayName={koreanName}
+      />
       <HourlyForecast lat={location.lat} lon={location.lon} />
     </AsyncBoundary>
   );
@@ -56,7 +66,11 @@ function SearchedLocationWeather({ locationName }: { locationName: string }) {
         <FavoriteToggleButton name={locationName} lat={lat} lon={lon} />
       </div>
       <AsyncBoundary fallback={<WeatherPageSkeleton />}>
-        <WeatherDisplay lat={lat} lon={lon} />
+        <WeatherDisplay
+          lat={lat}
+          lon={lon}
+          displayName={formatDistrictDisplay(locationName)}
+        />
         <HourlyForecast lat={lat} lon={lon} />
       </AsyncBoundary>
     </>

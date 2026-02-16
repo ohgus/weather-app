@@ -4,15 +4,16 @@ import { getWeatherIconUrl } from "@/shared/api/weather-api";
 interface WeatherDisplayProps {
   lat: number;
   lon: number;
+  displayName?: string;
 }
 
-export function WeatherDisplay({ lat, lon }: WeatherDisplayProps) {
+export function WeatherDisplay({ lat, lon, displayName }: WeatherDisplayProps) {
   const { data: weather } = useWeatherQuery(lat, lon);
 
   return (
     <section className="text-center">
       <h2 className="text-lg font-medium text-gray-600">
-        {weather.cityName}
+        {displayName || weather.cityName}
       </h2>
 
       <img
