@@ -1,15 +1,22 @@
-import { searchDistricts, formatDistrictDisplay } from "@/entities/location";
+import { useEffect, useRef } from "react";
+import { formatDistrictDisplay } from "@/entities/location";
 
 interface SearchLocationListProps {
-  query: string;
+  results: string[];
   onSelect: (district: string) => void;
+  highlightedIndex?: number;
 }
 
 export function SearchLocationList({
-  query,
+  results,
   onSelect,
+  highlightedIndex = -1,
 }: SearchLocationListProps) {
-  const results = searchDistricts(query);
+  const highlightedRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    highlightedRef.current?.scrollIntoView({ block: "nearest" });
+  }, [highlightedIndex]);
 
   if (results.length === 0) {
     return (
@@ -20,12 +27,19 @@ export function SearchLocationList({
   }
 
   return (
-    <ul>
-      {results.map((district) => (
-        <li key={district}>
+    <ul role="listbox">
+      {results.map((district, index) => (
+        <li
+          key={district}
+          ref={index === highlightedIndex ? highlightedRef : null}
+          role="option"
+          aria-selected={index === highlightedIndex}
+        >
           <button
             type="button"
-            className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-blue-50"
+            className={`w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-blue-50 ${
+              index === highlightedIndex ? "bg-blue-50" : ""
+            }`}
             onClick={() => onSelect(district)}
           >
             {formatDistrictDisplay(district)}

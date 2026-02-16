@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { formatDistrictDisplay } from "@/entities/location";
+import { searchDistricts, formatDistrictDisplay } from "@/entities/location";
 import { useDebouncedValue } from "@/shared/lib/use-debounce";
 import { LocationPinIcon, CloseIcon, SearchIcon } from "@/shared/ui";
 import { SearchLocationList } from "@/features/search-location";
@@ -19,8 +19,10 @@ export function SearchBar({
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const debouncedQuery = useDebouncedValue(query, DEBOUNCE_DELAY_MS);
   const containerRef = useRef<HTMLDivElement>(null);
+  const results = debouncedQuery ? searchDistricts(debouncedQuery) : [];
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -39,6 +41,37 @@ export function SearchBar({
     onSelect(district);
     setQuery("");
     setIsOpen(false);
+    setHighlightedIndex(-1);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.nativeEvent.isComposing) return;
+    if (!isOpen || results.length === 0) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setHighlightedIndex((prev) =>
+          prev < results.length - 1 ? prev + 1 : 0,
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setHighlightedIndex((prev) =>
+          prev > 0 ? prev - 1 : results.length - 1,
+        );
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (highlightedIndex >= 0) {
+          handleSelect(results[highlightedIndex]!);
+        }
+        break;
+      case "Escape":
+        setIsOpen(false);
+        setHighlightedIndex(-1);
+        break;
+    }
   }
 
   if (selectedLocation) {
@@ -70,10 +103,12 @@ export function SearchBar({
           onChange={(e) => {
             setQuery(e.target.value);
             setIsOpen(true);
+            setHighlightedIndex(-1);
           }}
           onFocus={() => {
             if (query) setIsOpen(true);
           }}
+          onKeyDown={handleKeyDown}
           placeholder="지역을 검색하세요"
           className="w-full bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
         />
@@ -82,8 +117,9 @@ export function SearchBar({
       {isOpen && debouncedQuery && (
         <div className="absolute top-full z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl bg-white/95 shadow-lg backdrop-blur-sm">
           <SearchLocationList
-            query={debouncedQuery}
+            results={results}
             onSelect={handleSelect}
+            highlightedIndex={highlightedIndex}
           />
         </div>
       )}
