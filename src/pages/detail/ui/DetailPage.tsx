@@ -48,7 +48,7 @@ export function DetailPage() {
         <button
           type="button"
           onClick={() => navigate("/")}
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-600 hover:bg-white/50"
+          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-white/50"
         >
           <ArrowLeftIcon className="h-5 w-5" />
           <span>뒤로</span>

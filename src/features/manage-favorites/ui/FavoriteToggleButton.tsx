@@ -32,7 +32,7 @@ export function FavoriteToggleButton({
     <button
       type="button"
       onClick={handleToggle}
-      className="rounded-full p-2 transition-colors hover:bg-white/50"
+      className="flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-white/50"
       aria-label={favorited ? "즐겨찾기 해제" : "즐겨찾기 추가"}
     >
       {favorited ? (

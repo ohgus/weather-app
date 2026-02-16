@@ -74,7 +74,7 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
             <button
               type="button"
               onClick={() => setIsEditing(true)}
-              className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
               aria-label="별칭 수정"
             >
               <EditIcon className="h-3.5 w-3.5" />
@@ -82,7 +82,7 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
             <button
               type="button"
               onClick={() => remove(favorite.id)}
-              className="rounded-full p-1 text-gray-400 hover:bg-red-50 hover:text-red-500"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500"
               aria-label="즐겨찾기 삭제"
             >
               <TrashIcon className="h-3.5 w-3.5" />

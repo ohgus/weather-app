@@ -50,7 +50,7 @@ export function SearchBar({
         <button
           type="button"
           onClick={onClear}
-          className="shrink-0 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
           aria-label="검색 초기화"
         >
           <CloseIcon className="h-4 w-4" />
