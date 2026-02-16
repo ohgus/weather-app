@@ -43,7 +43,7 @@ test.describe("현재 위치 날씨 표시", () => {
 
     const forecastSection = page.locator('section:has-text("시간대별 날씨")');
     const forecastCards = forecastSection.locator(".flex.gap-3 > div");
-    await expect(forecastCards).toHaveCount(8);
+    await expect(forecastCards).toHaveCount(16);
   });
 
   test("Skeleton UI가 로딩 중에 표시된다", async ({ page }) => {

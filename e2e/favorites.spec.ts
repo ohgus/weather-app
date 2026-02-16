@@ -35,26 +35,26 @@ test.describe("즐겨찾기 관리", () => {
   }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-종로구", lat: 37.5735, lon: 126.9788 },
+      { name: "서울특별시 종로구", lat: 37.5735, lon: 126.9788 },
     ]);
     await page.reload();
 
     await expect(page.getByText("즐겨찾기")).toBeVisible();
-    await expect(page.getByText("서울특별시-종로구")).toBeVisible();
+    await expect(page.getByText("서울특별시 종로구")).toBeVisible();
 
     await page.getByRole("button", { name: "즐겨찾기 삭제" }).click();
 
-    await expect(page.getByText("서울특별시-종로구")).not.toBeVisible();
+    await expect(page.getByText("서울특별시 종로구")).not.toBeVisible();
   });
 
   test("즐겨찾기 별칭을 수정할 수 있다", async ({ page }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-종로구", lat: 37.5735, lon: 126.9788 },
+      { name: "서울특별시 종로구", lat: 37.5735, lon: 126.9788 },
     ]);
     await page.reload();
 
-    await expect(page.getByText("서울특별시-종로구")).toBeVisible();
+    await expect(page.getByText("서울특별시 종로구")).toBeVisible();
 
     // 수정 버튼 클릭
     await page.getByRole("button", { name: "별칭 수정" }).click();
@@ -98,14 +98,14 @@ test.describe("즐겨찾기 관리", () => {
   test("새로고침 후에도 즐겨찾기가 유지된다", async ({ page }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-강남구", lat: 37.4979, lon: 127.0276 },
+      { name: "서울특별시 강남구", lat: 37.4979, lon: 127.0276 },
     ]);
     await page.reload();
 
-    await expect(page.getByText("서울특별시-강남구")).toBeVisible();
+    await expect(page.getByText("서울특별시 강남구")).toBeVisible();
 
     await page.reload();
 
-    await expect(page.getByText("서울특별시-강남구")).toBeVisible();
+    await expect(page.getByText("서울특별시 강남구")).toBeVisible();
   });
 });

@@ -47,7 +47,7 @@ function createCurrentWeatherResponse(overrides?: {
 
 function createForecastResponse(cityName = "Seoul") {
   const baseTime = 1700000000;
-  const items = Array.from({ length: 8 }, (_, i) => ({
+  const items = Array.from({ length: 16 }, (_, i) => ({
     dt: baseTime + i * 10800,
     main: {
       temp: 291.15 + i,
@@ -162,7 +162,7 @@ export async function setFavorites(
   const data = favorites.map((f) => ({
     id: `${f.lat},${f.lon}`,
     name: f.name,
-    alias: f.alias ?? f.name,
+    alias: f.alias ?? f.name.replaceAll("-", " "),
     lat: f.lat,
     lon: f.lon,
   }));

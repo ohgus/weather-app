@@ -11,12 +11,12 @@ test.describe("상세 페이지", () => {
   test("즐겨찾기 카드 클릭 시 상세 페이지로 이동한다", async ({ page }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-종로구", lat: 37.5735, lon: 126.9788 },
+      { name: "서울특별시 종로구", lat: 37.5735, lon: 126.9788 },
     ]);
     await page.reload();
 
     // 카드 내 Link 영역 클릭 (날씨 정보가 있는 영역)
-    await expect(page.getByText("서울특별시-종로구")).toBeVisible();
+    await expect(page.getByText("서울특별시 종로구")).toBeVisible();
     const card = page.locator('a[href*="/detail/"]').first();
     await card.click();
 
@@ -32,7 +32,7 @@ test.describe("상세 페이지", () => {
   }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-종로구", lat: 37.5735, lon: 126.9788 },
+      { name: "서울특별시 종로구", lat: 37.5735, lon: 126.9788 },
     ]);
     await page.reload();
 
@@ -51,7 +51,7 @@ test.describe("상세 페이지", () => {
   test("상세 페이지에서 즐겨찾기 토글이 동작한다", async ({ page }) => {
     await page.goto("/");
     await setFavorites(page, [
-      { name: "서울특별시-종로구", lat: 37.5735, lon: 126.9788 },
+      { name: "서울특별시 종로구", lat: 37.5735, lon: 126.9788 },
     ]);
     await page.reload();
 
@@ -84,7 +84,7 @@ test.describe("상세 페이지", () => {
   });
 
   test("상세 페이지에 전체 날씨 정보가 표시된다", async ({ page }) => {
-    await page.goto("/detail/37.5735,126.9788?name=서울특별시-종로구");
+    await page.goto("/detail/37.5735,126.9788?name=서울특별시 종로구");
 
     // 현재 기온 - text-7xl 클래스로 특정
     await expect(page.locator(".text-7xl")).toContainText("20°");
