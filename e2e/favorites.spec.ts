@@ -17,7 +17,7 @@ test.describe("즐겨찾기 관리", () => {
   }) => {
     await page.goto("/");
     await clearFavorites(page);
-    await expect(page.getByText("Seoul")).toBeVisible();
+    await expect(page.getByText("종로구")).toBeVisible();
 
     // 장소 검색 및 선택
     await page.getByPlaceholder("지역을 검색하세요").fill("종로");

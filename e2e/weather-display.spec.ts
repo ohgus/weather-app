@@ -21,8 +21,8 @@ test.describe("현재 위치 날씨 표시", () => {
   test("현재 위치의 날씨 정보가 표시된다", async ({ page }) => {
     await page.goto("/");
 
-    // 도시 이름
-    await expect(page.getByText("Seoul")).toBeVisible();
+    // 도시 이름 (Reverse Geocoding으로 한글 표시)
+    await expect(page.getByText("종로구")).toBeVisible();
 
     // 현재 기온 (293.15K → 20°C) - text-7xl 클래스로 특정
     await expect(page.locator(".text-7xl")).toContainText("20°");
@@ -89,6 +89,22 @@ test.describe("현재 위치 날씨 표시", () => {
             timezone: 32400,
           },
         }),
+      });
+    });
+    await page.route("**/geo/1.0/reverse*", async (route) => {
+      await new Promise((r) => setTimeout(r, 2000));
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify([
+          {
+            name: "Jongno-gu",
+            local_names: { ko: "종로구" },
+            lat: 37.5665,
+            lon: 126.978,
+            country: "KR",
+          },
+        ]),
       });
     });
     await page.route("https://openweathermap.org/img/wn/*", (route) =>

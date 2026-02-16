@@ -22,7 +22,7 @@ test.describe("장소 검색 → 날씨 조회", () => {
 
   test("장소 선택 시 해당 장소의 날씨가 표시된다", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Seoul")).toBeVisible();
+    await expect(page.getByText("종로구")).toBeVisible();
 
     // 검색
     const searchInput = page.getByPlaceholder("지역을 검색하세요");
@@ -42,7 +42,7 @@ test.describe("장소 검색 → 날씨 조회", () => {
     page,
   }) => {
     await page.goto("/");
-    await expect(page.getByText("Seoul")).toBeVisible();
+    await expect(page.getByText("종로구")).toBeVisible();
 
     // 검색 후 선택
     const searchInput = page.getByPlaceholder("지역을 검색하세요");
@@ -70,7 +70,7 @@ test.describe("장소 검색 → 날씨 조회", () => {
     await mockWeatherApi(page, { geocodingEmpty: true });
 
     await page.goto("/");
-    await expect(page.getByText("Seoul")).toBeVisible();
+    await expect(page.getByText("종로구")).toBeVisible();
 
     const searchInput = page.getByPlaceholder("지역을 검색하세요");
     await searchInput.fill("종로");

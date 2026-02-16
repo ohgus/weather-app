@@ -88,6 +88,15 @@ function createGeocodingResponse(
   return [{ name, lat, lon, country: "KR", state }];
 }
 
+function createReverseGeocodingResponse(
+  name: string,
+  koreanName: string,
+  lat: number,
+  lon: number,
+) {
+  return [{ name, local_names: { ko: koreanName }, lat, lon, country: "KR" }];
+}
+
 export async function mockWeatherApi(
   page: Page,
   options?: {
@@ -95,6 +104,12 @@ export async function mockWeatherApi(
     forecastCityName?: string;
     geocoding?: { name: string; lat: number; lon: number; state?: string };
     geocodingEmpty?: boolean;
+    reverseGeocoding?: {
+      name: string;
+      koreanName: string;
+      lat: number;
+      lon: number;
+    };
   },
 ) {
   await page.route(`${API_BASE}/data/2.5/weather*`, (route) => {
@@ -134,6 +149,23 @@ export async function mockWeatherApi(
       status: 200,
       contentType: "application/json",
       body: JSON.stringify(createGeocodingResponse(name, lat, lon, state)),
+    });
+  });
+
+  await page.route(`${API_BASE}/geo/1.0/reverse*`, (route) => {
+    const {
+      name = "Jongno-gu",
+      koreanName = "종로구",
+      lat = 37.5665,
+      lon = 126.978,
+    } = options?.reverseGeocoding ?? {};
+
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(
+        createReverseGeocodingResponse(name, koreanName, lat, lon),
+      ),
     });
   });
 

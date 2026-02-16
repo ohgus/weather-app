@@ -86,6 +86,9 @@ test.describe("상세 페이지", () => {
   test("상세 페이지에 전체 날씨 정보가 표시된다", async ({ page }) => {
     await page.goto("/detail/37.5735,126.9788?name=서울특별시 종로구");
 
+    // 지역명 (formatDistrictDisplay 적용)
+    await expect(page.getByText("서울특별시 종로구")).toBeVisible();
+
     // 현재 기온 - text-7xl 클래스로 특정
     await expect(page.locator(".text-7xl")).toContainText("20°");
 
@@ -100,5 +103,38 @@ test.describe("상세 페이지", () => {
 
     // 시간대별 예보
     await expect(page.getByText("시간대별 날씨")).toBeVisible();
+  });
+
+  test("즐겨찾기 별칭이 상세 페이지에 표시된다", async ({ page }) => {
+    await page.goto("/");
+    await setFavorites(page, [
+      {
+        name: "서울특별시 종로구",
+        lat: 37.5735,
+        lon: 126.9788,
+        alias: "우리 동네",
+      },
+    ]);
+    await page.reload();
+
+    const card = page.locator('a[href*="/detail/"]').first();
+    await card.click();
+    await page.waitForURL(/\/detail\//);
+
+    // 별칭이 도시명으로 표시
+    await expect(
+      page.locator("h2", { hasText: "우리 동네" }),
+    ).toBeVisible();
+  });
+
+  test("즐겨찾기가 아닌 경우 지역명이 표시된다", async ({ page }) => {
+    await page.goto(
+      "/detail/37.5735,126.9788?name=서울특별시-종로구",
+    );
+
+    // formatDistrictDisplay 적용된 지역명
+    await expect(
+      page.locator("h2", { hasText: "서울특별시 종로구" }),
+    ).toBeVisible();
   });
 });
