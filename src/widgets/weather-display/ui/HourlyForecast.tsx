@@ -1,7 +1,7 @@
 import { useForecastQuery } from "@/entities/weather";
 import { getWeatherIconUrl } from "@/shared/api/weather-api";
 
-const DISPLAY_COUNT = 8;
+const DISPLAY_COUNT = 16;
 
 interface HourlyForecastProps {
   lat: number;
