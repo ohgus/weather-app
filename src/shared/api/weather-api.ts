@@ -45,3 +45,12 @@ export function fetchGeocodingByName(
     `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(name)},KR&limit=5&appid=${API_KEY}`,
   );
 }
+
+export function fetchReverseGeocoding(
+  lat: number,
+  lon: number,
+): Promise<OpenWeatherGeocodingResponse[]> {
+  return fetchJson(
+    `${BASE_URL}/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${API_KEY}`,
+  );
+}
