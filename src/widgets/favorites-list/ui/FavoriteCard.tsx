@@ -33,10 +33,16 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
   }
 
   return (
-    <div className="relative rounded-2xl bg-white/60 p-4 backdrop-blur-sm transition-shadow hover:shadow-md">
+    <Link
+      to={`/detail/${favorite.id}?name=${encodeURIComponent(favorite.name)}`}
+      className="block rounded-2xl bg-white/60 p-4 backdrop-blur-sm transition-shadow hover:shadow-md"
+    >
       <div className="mb-2 flex items-start justify-between gap-1">
         {isEditing ? (
-          <div className="flex flex-1 items-center gap-1">
+          <div
+            className="flex flex-1 items-center gap-1"
+            onClick={(e) => e.preventDefault()}
+          >
             <input
               type="text"
               value={editValue}
@@ -70,7 +76,10 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
         )}
 
         {!isEditing && (
-          <div className="flex shrink-0 gap-1">
+          <div
+            className="flex shrink-0 gap-1"
+            onClick={(e) => e.preventDefault()}
+          >
             <button
               type="button"
               onClick={() => setIsEditing(true)}
@@ -91,27 +100,22 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
         )}
       </div>
 
-      <Link
-        to={`/detail/${favorite.id}?name=${encodeURIComponent(favorite.name)}`}
-        className="block"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img
-              src={getWeatherIconUrl(weather.weatherIcon)}
-              alt={weather.weatherDescription}
-              className="h-10 w-10"
-            />
-            <span className="text-2xl font-bold text-gray-900">
-              {weather.temperature}°
-            </span>
-          </div>
-          <div className="text-right text-xs text-gray-500">
-            <p>최고 {weather.tempMax}°</p>
-            <p>최저 {weather.tempMin}°</p>
-          </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <img
+            src={getWeatherIconUrl(weather.weatherIcon)}
+            alt={weather.weatherDescription}
+            className="h-10 w-10"
+          />
+          <span className="text-2xl font-bold text-gray-900">
+            {weather.temperature}°
+          </span>
         </div>
-      </Link>
-    </div>
+        <div className="text-right text-xs text-gray-500">
+          <p>최고 {weather.tempMax}°</p>
+          <p>최저 {weather.tempMin}°</p>
+        </div>
+      </div>
+    </Link>
   );
 }
