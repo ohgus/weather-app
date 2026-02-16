@@ -12,6 +12,8 @@ import {
   HourlyForecastSkeleton,
 } from "@/widgets/weather-display";
 import { SearchBar } from "@/widgets/search-bar";
+import { FavoriteToggleButton } from "@/features/manage-favorites";
+import { FavoritesList } from "@/widgets/favorites-list";
 
 function WeatherPageSkeleton() {
   return (
@@ -49,10 +51,15 @@ function SearchedLocationWeather({ locationName }: { locationName: string }) {
   const { lat, lon } = results[0]!;
 
   return (
-    <AsyncBoundary fallback={<WeatherPageSkeleton />}>
-      <WeatherDisplay lat={lat} lon={lon} />
-      <HourlyForecast lat={lat} lon={lon} />
-    </AsyncBoundary>
+    <>
+      <div className="flex justify-end">
+        <FavoriteToggleButton name={locationName} lat={lat} lon={lon} />
+      </div>
+      <AsyncBoundary fallback={<WeatherPageSkeleton />}>
+        <WeatherDisplay lat={lat} lon={lon} />
+        <HourlyForecast lat={lat} lon={lon} />
+      </AsyncBoundary>
+    </>
   );
 }
 
@@ -77,6 +84,8 @@ export function HomePage() {
           <GeolocatedWeather />
         )}
       </AsyncBoundary>
+
+      <FavoritesList />
     </div>
   );
 }
